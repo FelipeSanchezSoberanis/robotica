@@ -3,4 +3,5 @@ bin/
 lib64
 pyvenv.cfg
 share/
+pyrightconfig.json
 
