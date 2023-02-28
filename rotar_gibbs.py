@@ -10,7 +10,7 @@ def rotate(u: np.ndarray, ang: float, eje: np.ndarray) -> np.ndarray:
     Parameters:
     u (np.ndarray): Vector to be rotated.
     ang (float): Angle, in degrees, used to rotate the vector 'u'.
-    eje (np.ndarray): Axis around which to rotate the vector 'u'.
+    eje (np.ndarray): Axis around which to rotate the vector 'u'. Does not have to be normalized.
 
     Returns:
     np.ndarray: Rotated vector 'u' around the axis 'eje' with a rotation of 'ang' degrees.
