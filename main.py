@@ -1,11 +1,18 @@
+from rotar_gibbs import rotate
+import numpy as np
 import sympy as sp
 
-sp.init_printing()
 
-ex, ey, ez = sp.symbols("ex ey ez")
+def main():
+    ex, ey, ez = sp.symbols("ex ey ez")
+    theta = 30
+    u = np.array([1, 1, 1])
+    eje = np.array([ex, ey, ez])
 
-e = sp.Matrix([[ex], [ey], [ez]])
+    W = rotate(u, theta, eje)
 
-uni = e / e.norm()
+    print(W)
 
-sp.pprint(uni)
+
+if __name__ == "__main__":
+    main()
