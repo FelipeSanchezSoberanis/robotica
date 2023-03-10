@@ -1,24 +1,15 @@
+import operations.numeric as num_op
+import operations.symbolic as sym_op
+import numpy as np
 import sympy as sp
-
-
-def rotate(e: sp.Matrix, theta: sp.Symbol) -> sp.Matrix:
-    ex: sp.Symbol = e[0, 0]  # type: ignore
-    ey: sp.Symbol = e[1, 0]  # type: ignore
-    ez: sp.Symbol = e[2, 0]  # type: ignore
-
-    se = sp.Matrix([[0, -ez, ey], [ez, 0, -ex], [-ey, ex, 0]])
-
-    return e @ e.T + (sp.eye(3) - e @ e.T) * sp.cos(theta) + se * sp.sin(theta)
 
 
 def main():
     ex, ey, ez = sp.symbols("ex ey ez")
     theta = sp.symbols("theta")
 
-    e = sp.Matrix([[ex], [ey], [ez]])
-
-    r = rotate(e, theta)
-    sp.pprint(r)
+    print(num_op.rotate(np.array([[15], [2], [2]]), 30))
+    sp.pprint(sym_op.rotate(sp.Matrix([[ex], [ey], [ez]]), theta))
 
 
 if __name__ == "__main__":
