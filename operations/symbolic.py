@@ -11,9 +11,3 @@ def rotate(e: sp.Matrix, theta: sp.Symbol) -> sp.Matrix:
     return e @ e.T + (sp.eye(3) - e @ e.T) * sp.cos(theta) + se * sp.sin(theta)
 
 
-def main():
-    pass
-
-
-if __name__ == "__main__":
-    main()

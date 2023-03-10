@@ -13,11 +13,3 @@ def rotate(e: np.ndarray, theta: float) -> np.ndarray:
     )
 
     return e @ e.T + (np.eye(3) - e @ e.T) * np.cos(_theta) + se * np.sin(_theta)
-
-
-def main():
-    pass
-
-
-if __name__ == "__main__":
-    main()
