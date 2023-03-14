@@ -5,4 +5,5 @@ pyvenv.cfg
 share/
 pyrightconfig.json
 __pycache__/
+videos/
 
