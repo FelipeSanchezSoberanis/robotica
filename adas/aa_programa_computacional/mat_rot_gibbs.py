@@ -13,6 +13,7 @@ def num_mat_rot_gibbs(e: np.ndarray, phi: float) -> np.ndarray:
 
 def sym_mat_rot_gibbs(e: sp.Matrix, phi: sp.Symbol) -> sp.Matrix:
     e = e.reshape(3, 1)
+
     ex, ey, ez = e[0, 0], e[1, 0], e[2, 0]
     se = sp.Matrix([[0, -ez, ey], [ez, 0, -ex], [-ey, ex, 0]])  # type: ignore
     return e @ e.T + sp.cos(phi) * (sp.eye(3) - e @ e.T) + sp.sin(phi) * se
