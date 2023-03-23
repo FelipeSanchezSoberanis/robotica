@@ -46,17 +46,21 @@ def sym_trans_homo_inv(e: sp.Matrix, phi: sp.Symbol, aq: sp.Matrix) -> sp.Matrix
 
 
 def main():
-    #  num = num_trans_homo_inv(1, 0, 0, 30, 3, 10, -1)
-    #  print("Resultado numérico:")
-    #  sp.pprint(num)
+    num_e = np.array([[0], [0], [1]])
+    num_phi = 30
+    num_p = np.array([[4], [3], [0]])
 
-    #  ex, ey, ez, phi, _1Porg2x, _1Porg2y, _1Porg2z = sp.symbols(
-    #      "ex, ey, ez, phi, _1Porg2x, _1Porg2y, _1Porg2z"
-    #  )
-    #  sym = sym_trans_homo_inv(ex, ey, ez, phi, _1Porg2x, _1Porg2y, _1Porg2z)
-    #  print("Resultado simbólico:")
-    #  sp.pprint(sym)
-    pass
+    num_res = num_trans_homo_inv(num_e, num_phi, num_p)
+    print("Resultado numérico:")
+    sp.pprint(num_res)
+
+    ex, ey, ez, phi, px, py, pz = sp.symbols("ex ey ez phi px py pz ")
+    sym_e = sp.Matrix([[ex], [ey], [ez]])
+    sym_p = sp.Matrix([[px], [py], [pz]])
+
+    sym_res = sym_trans_homo_inv(sym_e, phi, sym_p)
+    print("Resultado simbólico:")
+    sp.pprint(sym_res)
 
 
 if __name__ == "__main__":
