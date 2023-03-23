@@ -7,7 +7,7 @@ def num_mat_rot_gibbs(e: np.ndarray, phi: float) -> np.ndarray:
     phi = np.deg2rad(phi)
 
     ex, ey, ez = e[0, 0], e[1, 0], e[2, 0]
-    se = np.array([[0, -ez, ey], [ez, 0, -ex], [-ey, ex, 0]])  # type: ignore
+    se = np.array([[0, -ez, ey], [ez, 0, -ex], [-ey, ex, 0]], dtype=float)
     return e @ e.T + np.cos(phi) * (np.eye(3) - e @ e.T) + np.sin(phi) * se
 
 
