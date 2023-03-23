@@ -2,7 +2,7 @@ import numpy as np
 import sympy as sp
 
 
-def num_mat_rot_inv(ex, ey, ez, phi) -> np.ndarray:
+def num_mat_rot_inv(ex: float, ey: float, ez: float, phi: float) -> np.ndarray:
     _phi: float = np.deg2rad(phi)
     e: np.ndarray = np.array([[ex], [ey], [ez]])
     se = np.array([[0, -ez, ey], [ez, 0, -ex], [-ey, ex, 0]])  # type: ignore
@@ -12,7 +12,15 @@ def num_mat_rot_inv(ex, ey, ez, phi) -> np.ndarray:
     return mat_rot.T
 
 
-def num_trans_homo_inv(ex, ey, ez, phi, _1Porg2x, _1Porg2y, _1Porg2z) -> np.ndarray:
+def num_trans_homo_inv(
+    ex: float,
+    ey: float,
+    ez: float,
+    phi: float,
+    _1Porg2x: float,
+    _1Porg2y: float,
+    _1Porg2z: float,
+) -> np.ndarray:
     rot_inv = num_mat_rot_inv(ex, ey, ez, phi)
     aq: np.ndarray = np.array([[_1Porg2x], [_1Porg2y], [_1Porg2z]])
     raq = -rot_inv @ aq
@@ -21,7 +29,9 @@ def num_trans_homo_inv(ex, ey, ez, phi, _1Porg2x, _1Porg2y, _1Porg2z) -> np.ndar
     return thi
 
 
-def sym_mat_rot_inv(ex, ey, ez, phi) -> sp.Matrix:
+def sym_mat_rot_inv(
+    ex: sp.Symbol, ey: sp.Symbol, ez: sp.Symbol, phi: sp.Symbol
+) -> sp.Matrix:
     e = sp.Matrix([[ex], [ey], [ez]])
     se = sp.Matrix([[0, -ez, ey], [ez, 0, -ex], [-ey, ex, 0]])
     mat_rot: sp.Matrix = (
@@ -30,7 +40,15 @@ def sym_mat_rot_inv(ex, ey, ez, phi) -> sp.Matrix:
     return mat_rot.T
 
 
-def sym_trans_homo_inv(ex, ey, ez, phi, _1Porg2x, _1Porg2y, _1Porg2z) -> sp.Matrix:
+def sym_trans_homo_inv(
+    ex: sp.Symbol,
+    ey: sp.Symbol,
+    ez: sp.Symbol,
+    phi: sp.Symbol,
+    _1Porg2x: sp.Symbol,
+    _1Porg2y: sp.Symbol,
+    _1Porg2z: sp.Symbol,
+) -> sp.Matrix:
     rot_inv = sym_mat_rot_inv(ex, ey, ez, phi)
     aq = sp.Matrix([[_1Porg2x], [_1Porg2y], [_1Porg2z]])
     raq: sp.Matrix = -rot_inv @ aq
