@@ -59,12 +59,14 @@ def sym_trans_homo_inv(
 
 def main():
     num = num_trans_homo_inv(1, 0, 0, 30, 3, 10, -1)
+    print("Resultado numérico:")
     sp.pprint(num)
 
     ex, ey, ez, phi, _1Porg2x, _1Porg2y, _1Porg2z = sp.symbols(
         "ex, ey, ez, phi, _1Porg2x, _1Porg2y, _1Porg2z"
     )
     sym = sym_trans_homo_inv(ex, ey, ez, phi, _1Porg2x, _1Porg2y, _1Porg2z)
+    print("Resultado simbólico:")
     sp.pprint(sym)
 
 

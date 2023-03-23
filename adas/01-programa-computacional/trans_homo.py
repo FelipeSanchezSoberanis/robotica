@@ -4,12 +4,15 @@ import mat_rot_gibbs as mrg
 
 
 def num_trans_homo(
-    e: np.ndarray, phi, _1Porg2x, _1Porg2y, _1Porg2z, _2Px, _2Py, _2Pz
+    e: np.ndarray,
+    phi: float,
+    _1Porg2x: float,
+    _1Porg2y: float,
+    _1Porg2z: float,
+    _2Px: float,
+    _2Py: float,
+    _2Pz: float,
 ) -> tuple[np.ndarray, np.ndarray]:
-    """
-    e: 3x1
-    """
-
     mat_rot = mrg.num_mat_rot_gibbs(e, phi)
     aq = np.array([[_1Porg2x], [_1Porg2y], [_1Porg2z]])
     join_R_AQ = np.concatenate([mat_rot, aq], axis=1)
@@ -20,12 +23,15 @@ def num_trans_homo(
 
 
 def sym_trans_homo(
-    e: sp.Matrix, phi, _1Porg2x, _1Porg2y, _1Porg2z, _2Px, _2Py, _2Pz
+    e: sp.Matrix,
+    phi: sp.Symbol,
+    _1Porg2x: sp.Symbol,
+    _1Porg2y: sp.Symbol,
+    _1Porg2z: sp.Symbol,
+    _2Px: sp.Symbol,
+    _2Py: sp.Symbol,
+    _2Pz: sp.Symbol,
 ) -> tuple[sp.Matrix, sp.Matrix]:
-    """
-    e: 3x1
-    """
-
     mat_rot = mrg.sym_mat_rot_gibbs(e, phi)
     aq = sp.Matrix([[_1Porg2x], [_1Porg2y], [_1Porg2z]])
     join_R_AQ = mat_rot.row_join(aq)
@@ -44,7 +50,13 @@ def main():
 
     ex, ey, ez = sp.symbols("ex ey ez")
     e = sp.Matrix([[ex], [ey], [ez]])
-    th, p2 = sym_trans_homo(e, 30, 3, 10, -1, 0, -1, 2)
+    phi = sp.symbols("phi")
+
+    _1Porg2x, _1Porg2y, _1Porg2z, _2Px, _2Py, _2Pz = sp.symbols(
+        "_1Porg2x _1Porg2y _1Porg2z _2Px _2Py _2Pz"
+    )
+
+    th, p2 = sym_trans_homo(e, phi, _1Porg2x, _1Porg2y, _1Porg2z, _2Px, _2Py, _2Pz)
     print("Resultado simbólico:")
     sp.pprint(th)
     sp.pprint(p2)
