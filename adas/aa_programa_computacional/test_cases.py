@@ -72,7 +72,7 @@ class TestAda01(unittest.TestCase):
 
         np.testing.assert_almost_equal(calculated_result, result)
 
-    def test_complex(self):
+    def test_mult_rot_trans(self):
         e = np.array([[0], [0], [1]])
         phi = 90
         trans = np.array([[0], [0.4], [0.2]])
