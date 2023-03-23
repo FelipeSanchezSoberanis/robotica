@@ -24,31 +24,24 @@ def num_trans_homo_inv(e: np.ndarray, phi: float, aq: np.ndarray) -> np.ndarray:
     return thi
 
 
-def sym_mat_rot_inv(
-    ex: sp.Symbol, ey: sp.Symbol, ez: sp.Symbol, phi: sp.Symbol
-) -> sp.Matrix:
-    e = sp.Matrix([[ex], [ey], [ez]])
-    se = sp.Matrix([[0, -ez, ey], [ez, 0, -ex], [-ey, ex, 0]])
+def sym_mat_rot_inv(e: sp.Matrix, phi: sp.Symbol) -> sp.Matrix:
+    ex, ey, ez = (
+        e[0, 0],
+        e[1, 0],
+        e[2, 0],
+    )
+    se = sp.Matrix([[0, -ez, ey], [ez, 0, -ex], [-ey, ex, 0]])  # type: ignore
     mat_rot: sp.Matrix = (
         e @ e.T + sp.cos(phi) * (sp.eye(3) - e @ e.T) + sp.sin(phi) * se
     )
     return mat_rot.T
 
 
-def sym_trans_homo_inv(
-    ex: sp.Symbol,
-    ey: sp.Symbol,
-    ez: sp.Symbol,
-    phi: sp.Symbol,
-    _1Porg2x: sp.Symbol,
-    _1Porg2y: sp.Symbol,
-    _1Porg2z: sp.Symbol,
-) -> sp.Matrix:
-    rot_inv = sym_mat_rot_inv(ex, ey, ez, phi)
-    aq = sp.Matrix([[_1Porg2x], [_1Porg2y], [_1Porg2z]])
+def sym_trans_homo_inv(e: sp.Matrix, phi: sp.Symbol, aq: sp.Matrix) -> sp.Matrix:
+    rot_inv = sym_mat_rot_inv(e, phi)
     raq: sp.Matrix = -rot_inv @ aq
-    join_R_AQ = rot_inv.row_join(raq)
-    thi = join_R_AQ.col_join(sp.Matrix([[0, 0, 0, 1]]))
+    join_R_AQ: sp.Matrix = rot_inv.row_join(raq)
+    thi: sp.Matrix = join_R_AQ.col_join(sp.Matrix([[0, 0, 0, 1]]))
     return thi
 
 
@@ -57,12 +50,13 @@ def main():
     #  print("Resultado numérico:")
     #  sp.pprint(num)
 
-    ex, ey, ez, phi, _1Porg2x, _1Porg2y, _1Porg2z = sp.symbols(
-        "ex, ey, ez, phi, _1Porg2x, _1Porg2y, _1Porg2z"
-    )
-    sym = sym_trans_homo_inv(ex, ey, ez, phi, _1Porg2x, _1Porg2y, _1Porg2z)
-    print("Resultado simbólico:")
-    sp.pprint(sym)
+    #  ex, ey, ez, phi, _1Porg2x, _1Porg2y, _1Porg2z = sp.symbols(
+    #      "ex, ey, ez, phi, _1Porg2x, _1Porg2y, _1Porg2z"
+    #  )
+    #  sym = sym_trans_homo_inv(ex, ey, ez, phi, _1Porg2x, _1Porg2y, _1Porg2z)
+    #  print("Resultado simbólico:")
+    #  sp.pprint(sym)
+    pass
 
 
 if __name__ == "__main__":
