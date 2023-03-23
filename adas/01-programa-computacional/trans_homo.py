@@ -15,7 +15,7 @@ def num_trans_homo(
     _2Py: float,
     _2Pz: float,
 ) -> np.ndarray:
-    mat_rot = mrg.num_mat_rot_gibbs(ex, ey, ez, phi)
+    mat_rot = mrg.num_mat_rot_gibbs(np.array([[ex], [ey], [ez]]), phi)
     aq = np.array([[_1Porg2x], [_1Porg2y], [_1Porg2z]])
     join_r_aq = np.concatenate([mat_rot, aq], axis=1)
     th = np.concatenate([join_r_aq, np.array([[0, 0, 0, 1]])], axis=0)
@@ -35,7 +35,7 @@ def sym_trans_homo(
     _2Py: sp.Symbol,
     _2Pz: sp.Symbol,
 ) -> sp.Matrix:
-    mat_rot = mrg.sym_mat_rot_gibbs(ex, ey, ez, phi)
+    mat_rot = mrg.sym_mat_rot_gibbs(sp.Matrix([[ex], [ey], [ez]]), phi)
     aq = sp.Matrix([[_1Porg2x], [_1Porg2y], [_1Porg2z]])
     join_r_aq: sp.Matrix = mat_rot.row_join(aq)
     th: sp.Matrix = join_r_aq.col_join(sp.Matrix([[0, 0, 0, 1]]))
