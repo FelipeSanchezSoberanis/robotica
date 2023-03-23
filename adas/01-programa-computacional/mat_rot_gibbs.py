@@ -2,11 +2,25 @@ import sympy as sp
 import numpy as np
 
 
-def num_mat_rot_gibbs(ex: float, ey: float, ez: float, phi: float) -> np.ndarray:
-    phi = np.deg2rad(phi)
-    e = np.array([ex, ey, ez])
-    se: np.ndarray = np.array([[0, -ez, ey], [ez, 0, -ex], [-ey, ex, 0]])  # type: ignore
-    return e * e.T + np.cos(phi) * (np.eye(3) - e * e.T) + np.sin(phi) * se
+def num_mat_rot_gibbs(u: np.ndarray, phi: float, e: np.ndarray) -> np.ndarray:
+    u = u.reshape(3, 1)
+    e = e.reshape(3, 1)
+
+    ang = np.deg2rad(phi)
+    uni = e / np.linalg.norm(e)
+    se = np.array(
+        [
+            np.array([0, -uni[2, 0], uni[1, 0]]),
+            np.array([uni[2, 0], 0, -uni[0, 0]]),
+            np.array([-uni[1, 0], uni[0, 0], 0]),
+        ]
+    )
+    q = (
+        np.outer(uni, uni)
+        + (np.identity(3) - np.outer(uni, uni)) * np.cos(ang)
+        + se * np.sin(ang)
+    )
+    return q @ u
 
 
 def sym_mat_rot_gibbs(
@@ -18,14 +32,12 @@ def sym_mat_rot_gibbs(
 
 
 def main():
-    num = num_mat_rot_gibbs(0, 0, 1, 30)
+    u = np.array([[10], [2], [-5]])
+    phi = 30
+    e = np.array([[1 / np.sqrt(3)], [1 / np.sqrt(3)], [-1 / np.sqrt(3)]])
+    num = num_mat_rot_gibbs(u, phi, e)
     print("Resultado numérico:")
     sp.pprint(num)
-
-    ex, ey, ez, phi = sp.symbols("ex ey ez phi")
-    sym = sym_mat_rot_gibbs(ex, ey, ez, phi)
-    print("Resultado simbólico:")
-    sp.pprint(sym)
 
 
 if __name__ == "__main__":
