@@ -85,11 +85,11 @@ class TestAda01(unittest.TestCase):
         cam_e_2 = np.array([[1], [0], [0]])
         cam_phi_2 = 180
 
-        cam_trans = np.array([[-0.5], [0.5], [2]])
+        cam_tran = np.array([[-0.5], [0.5], [2]])
 
         cam_es = [cam_e_1, cam_e_2]
         cam_phis: list[float] = [cam_phi_1, cam_phi_2]
-        t_1_3 = th.num_create_th_many_rot(cam_es, cam_phis, cam_trans)
+        t_1_3 = th.num_create_th_many_rot(cam_es, cam_phis, cam_tran)
 
         calculated_result = t_1_3 @ t_1_2
 
