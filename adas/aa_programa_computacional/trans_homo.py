@@ -21,6 +21,20 @@ def num_trans_homo(
     return p2
 
 
+def num_trans_homo_th(
+    e: np.ndarray,
+    phi: float,
+    aq: np.ndarray,
+) -> np.ndarray:
+    e = e.reshape(3, 1)
+    aq = aq.reshape(3, 1)
+
+    mat_rot = mrg.num_mat_rot_gibbs(e, phi)
+    join_R_AQ = np.concatenate([mat_rot, aq], axis=1)
+    th = np.concatenate([join_R_AQ, np.array([[0, 0, 0, 1]])], axis=0)
+    return th
+
+
 def sym_trans_homo(
     e: sp.Matrix, phi: sp.Symbol, aq: sp.Matrix, p1: sp.Matrix
 ) -> sp.Matrix:

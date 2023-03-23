@@ -72,6 +72,23 @@ class TestAda01(unittest.TestCase):
 
         np.testing.assert_almost_equal(calculated_result, result)
 
+    def test_complex(self):
+        e = np.array([[0], [0], [1]])
+        phi = 90
+        aq = np.array([[0], [0.4], [0.2]])
+
+        t_1_2 = th.num_trans_homo_th(e, phi, aq)
+
+        t_3_1 = np.array([[0, 1, 0, -0.5], [1, 0, 0, 0.5], [0, 0, -1, 2], [0, 0, 0, 1]])
+
+        calculated_result = t_3_1 @ t_1_2
+
+        result = np.array(
+            [[1, 0, 0, -0.1], [0, -1, 0, 0.5], [0, 0, -1, 1.8], [0, 0, 0, 1]]
+        )
+
+        np.testing.assert_almost_equal(calculated_result, result)
+
 
 if __name__ == "__main__":
     unittest.main()
