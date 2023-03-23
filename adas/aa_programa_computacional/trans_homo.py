@@ -9,6 +9,10 @@ def num_trans_homo(
     aq: np.ndarray,
     p1: np.ndarray,
 ) -> np.ndarray:
+    e = e.reshape(3, 1)
+    aq = aq.reshape(3, 1)
+    p1 = p1.reshape(3, 1)
+
     mat_rot = mrg.num_mat_rot_gibbs(e, phi)
     join_R_AQ = np.concatenate([mat_rot, aq], axis=1)
     th = np.concatenate([join_R_AQ, np.array([[0, 0, 0, 1]])], axis=0)
