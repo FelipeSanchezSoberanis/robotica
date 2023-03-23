@@ -75,13 +75,23 @@ class TestAda01(unittest.TestCase):
     def test_complex(self):
         e = np.array([[0], [0], [1]])
         phi = 90
-        aq = np.array([[0], [0.4], [0.2]])
+        trans = np.array([[0], [0.4], [0.2]])
 
-        t_1_2 = th.num_trans_homo_th(e, phi, aq)
+        t_1_2 = th.num_trans_homo_th(e, phi, trans)
 
-        t_3_1 = np.array([[0, 1, 0, -0.5], [1, 0, 0, 0.5], [0, 0, -1, 2], [0, 0, 0, 1]])
+        cam_e_1 = np.array([[0], [0], [1]])
+        cam_phi_1 = 90
 
-        calculated_result = t_3_1 @ t_1_2
+        cam_e_2 = np.array([[1], [0], [0]])
+        cam_phi_2 = 180
+
+        cam_trans = np.array([[-0.5], [0.5], [2]])
+
+        cam_es = [cam_e_1, cam_e_2]
+        cam_phis: list[float] = [cam_phi_1, cam_phi_2]
+        t_1_3 = th.num_create_th_many_rot(cam_es, cam_phis, cam_trans)
+
+        calculated_result = t_1_3 @ t_1_2
 
         result = np.array(
             [[1, 0, 0, -0.1], [0, -1, 0, 0.5], [0, 0, -1, 1.8], [0, 0, 0, 1]]

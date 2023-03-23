@@ -3,6 +3,21 @@ import sympy as sp
 import mat_rot_gibbs as mrg
 
 
+def num_create_th_many_rot(es: list[np.ndarray], phis: list[float], trans: np.ndarray):
+    for i in range(len(es)):
+        es[i] = es[i].reshape(3, 1)
+    trans = trans.reshape(3, 1)
+
+    mat_rot = np.eye(3)
+    for e, phi in zip(es, phis):
+        mat_rot = mat_rot @ mrg.num_mat_rot_gibbs(e, phi)
+
+    th = np.concatenate([mat_rot, trans], axis=1)
+    th = np.concatenate([th, np.array([[0, 0, 0, 1]])], axis=0)
+
+    return th
+
+
 def num_trans_homo(
     e: np.ndarray,
     phi: float,
