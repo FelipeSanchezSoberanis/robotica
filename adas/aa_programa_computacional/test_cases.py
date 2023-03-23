@@ -1,7 +1,7 @@
 import unittest
-import adas.aa_programa_computacional.mat_rot_gibbs as mrg
-import adas.aa_programa_computacional.trans_homo as th
-import adas.aa_programa_computacional.trans_homo_inv as thi
+import mat_rot_gibbs as mrg
+import trans_homo as th
+import trans_homo_inv as thi
 import numpy as np
 
 
@@ -71,3 +71,7 @@ class TestAda01(unittest.TestCase):
         calculated_result = thi.num_trans_homo_inv(e, phi, system)
 
         np.testing.assert_almost_equal(calculated_result, result)
+
+
+if __name__ == "__main__":
+    unittest.main()

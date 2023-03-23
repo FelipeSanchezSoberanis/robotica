@@ -1,6 +1,6 @@
 import numpy as np
 import sympy as sp
-import adas.aa_programa_computacional.mat_rot_gibbs as mrg
+import mat_rot_gibbs as mrg
 
 
 def num_trans_homo(
