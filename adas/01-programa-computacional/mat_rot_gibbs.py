@@ -3,6 +3,10 @@ import sympy as sp
 
 
 def num_mat_rot_gibbs(e: np.ndarray, phi: float) -> np.ndarray:
+    """
+    e: 3x1
+    """
+
     e = e.reshape(3, 1)
     phi = np.deg2rad(phi)
 
@@ -11,7 +15,11 @@ def num_mat_rot_gibbs(e: np.ndarray, phi: float) -> np.ndarray:
     return e @ e.T + np.cos(phi) * (np.eye(3) - e @ e.T) + np.sin(phi) * se
 
 
-def sym_mat_rot_gibbs(e: sp.Matrix, phi: sp.Matrix) -> sp.Matrix:
+def sym_mat_rot_gibbs(e: sp.Matrix, phi: sp.Symbol) -> sp.Matrix:
+    """
+    e: 3x1
+    """
+
     e = e.reshape(3, 1)
     ex, ey, ez = e[0, 0], e[1, 0], e[2, 0]
     se = sp.Matrix([[0, -ez, ey], [ez, 0, -ex], [-ey, ex, 0]])  # type: ignore
