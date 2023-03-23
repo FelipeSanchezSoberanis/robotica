@@ -2,9 +2,13 @@ import numpy as np
 import sympy as sp
 
 
-def num_mat_rot_inv(ex: float, ey: float, ez: float, phi: float) -> np.ndarray:
+def num_mat_rot_inv(e: np.ndarray, phi: float) -> np.ndarray:
     _phi: float = np.deg2rad(phi)
-    e: np.ndarray = np.array([[ex], [ey], [ez]])
+    ex, ey, ez = (
+        e[0, 0],
+        e[1, 0],
+        e[2, 0],
+    )
     se = np.array([[0, -ez, ey], [ez, 0, -ex], [-ey, ex, 0]])  # type: ignore
     mat_rot: np.ndarray = (
         e @ e.T + np.cos(_phi) * (np.eye(3) - e @ e.T) + np.sin(_phi) * se
@@ -12,17 +16,8 @@ def num_mat_rot_inv(ex: float, ey: float, ez: float, phi: float) -> np.ndarray:
     return mat_rot.T
 
 
-def num_trans_homo_inv(
-    ex: float,
-    ey: float,
-    ez: float,
-    phi: float,
-    _1Porg2x: float,
-    _1Porg2y: float,
-    _1Porg2z: float,
-) -> np.ndarray:
-    rot_inv = num_mat_rot_inv(ex, ey, ez, phi)
-    aq: np.ndarray = np.array([[_1Porg2x], [_1Porg2y], [_1Porg2z]])
+def num_trans_homo_inv(e: np.ndarray, phi: float, aq: np.ndarray) -> np.ndarray:
+    rot_inv = num_mat_rot_inv(e, phi)
     raq = -rot_inv @ aq
     join_R_AQ = np.concatenate([rot_inv, raq], axis=1)
     thi = np.concatenate([join_R_AQ, np.array([[0, 0, 0, 1]])], axis=0)
@@ -58,9 +53,9 @@ def sym_trans_homo_inv(
 
 
 def main():
-    num = num_trans_homo_inv(1, 0, 0, 30, 3, 10, -1)
-    print("Resultado numérico:")
-    sp.pprint(num)
+    #  num = num_trans_homo_inv(1, 0, 0, 30, 3, 10, -1)
+    #  print("Resultado numérico:")
+    #  sp.pprint(num)
 
     ex, ey, ez, phi, _1Porg2x, _1Porg2y, _1Porg2z = sp.symbols(
         "ex, ey, ez, phi, _1Porg2x, _1Porg2y, _1Porg2z"
