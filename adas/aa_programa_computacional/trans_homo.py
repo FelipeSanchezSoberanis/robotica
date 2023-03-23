@@ -22,43 +22,39 @@ def num_trans_homo(
 
 
 def sym_trans_homo(
-    e: sp.Matrix,
-    phi: sp.Symbol,
-    _1Porg2x: sp.Symbol,
-    _1Porg2y: sp.Symbol,
-    _1Porg2z: sp.Symbol,
-    _2Px: sp.Symbol,
-    _2Py: sp.Symbol,
-    _2Pz: sp.Symbol,
-) -> tuple[sp.Matrix, sp.Matrix]:
+    e: sp.Matrix, phi: sp.Symbol, aq: sp.Matrix, p1: sp.Matrix
+) -> sp.Matrix:
+    e = e.reshape(3, 1)
+    aq = aq.reshape(3, 1)
+    p1 = p1.reshape(3, 1)
+
     mat_rot = mrg.sym_mat_rot_gibbs(e, phi)
-    aq = sp.Matrix([[_1Porg2x], [_1Porg2y], [_1Porg2z]])
-    join_R_AQ = mat_rot.row_join(aq)
-    th = join_R_AQ.col_join(sp.Matrix([[0, 0, 0, 1]]))
-    p1 = sp.Matrix([[_2Px], [_2Py], [_2Pz], [1]])
-    p2 = th @ p1
-    return th, p2
+    join_R_AQ: sp.Matrix = mat_rot.row_join(aq)
+    th: sp.Matrix = join_R_AQ.col_join(sp.Matrix([[0, 0, 0, 1]]))
+    p1 = p1.col_join(sp.Matrix([[1]]))
+    p2: sp.Matrix = th @ p1
+    return p2
 
 
 def main():
-    #  e = np.array([[1], [0], [0]])
-    #  th, p2 = num_trans_homo(e, 30, 3, 10, -1, 0, -1, 2)
-    #  print("Resultado numérico:")
-    #  sp.pprint(th)
-    #  sp.pprint(p2)
+    e = np.array([[0], [0], [1]])
+    phi = -90
+    system = np.array([[0], [0], [0]])
+    vector = np.array([[4], [8], [12]])
+    result = num_trans_homo(e, phi, system, vector)
+    print("Resultado numérico:")
+    sp.pprint(result)
 
     ex, ey, ez = sp.symbols("ex ey ez")
-    e = sp.Matrix([[ex], [ey], [ez]])
+    vx, vy, vz = sp.symbols("vx vy vz")
+    sx, sy, sz = sp.symbols("sx sy sz")
     phi = sp.symbols("phi")
-
-    _1Porg2x, _1Porg2y, _1Porg2z, _2Px, _2Py, _2Pz = sp.symbols(
-        "_1Porg2x _1Porg2y _1Porg2z _2Px _2Py _2Pz"
-    )
-
-    th, p2 = sym_trans_homo(e, phi, _1Porg2x, _1Porg2y, _1Porg2z, _2Px, _2Py, _2Pz)
+    e = sp.Matrix([[ex], [ey], [ez]])
+    system = sp.Matrix([[sx], [sy], [sz]])
+    vector = sp.Matrix([[vx], [vy], [vz]])
+    result = sym_trans_homo(e, phi, system, vector)
     print("Resultado simbólico:")
-    sp.pprint(th)
-    sp.pprint(p2)
+    sp.pprint(result)
 
 
 if __name__ == "__main__":
