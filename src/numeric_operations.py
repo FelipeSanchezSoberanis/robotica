@@ -51,3 +51,34 @@ def mat_trans_homo(
     mat_homo = np.append(mat_homo, bottom_row, axis=0)
 
     return mat_homo
+
+
+def mat_trans_homo_inv(
+    e: np.ndarray, phi: float, vt: np.ndarray, sf: float, vp: np.ndarray
+) -> np.ndarray:
+    """
+    Calculates the inverse homogenous transformation matrix given an axis of
+    rotation, degree of rotation, vector of translation, scaling factor and
+    vector of perspective.
+
+    Parameters:
+    - e (np.ndarray): Axis of rotation. Can be of shape (1, 3) or (3, 1).
+    - phi (float): Degrees of rotation. Has to be in degrees, not radians.
+    - vt (np.ndarray): Translation vector. Can be of shape (1, 3) or (3, 1).
+    - sf (float): Scaling factor.
+    - vp (np.ndarray): Perspective vector. Can be of shape (1, 3) or (3, 1).
+
+    Returns:
+    - np.ndarray: Inverse homogenous transformation matrix. Has shape (4, 4).
+    """
+    e = e.reshape(3, 1)
+    vt = vt.reshape(3, 1)
+    vp = vp.reshape(1, 3)
+
+    mat_rot_inv = mat_rot_gibbs(e, phi).T
+    mat_inv = mat_rot_inv
+    mat_inv = np.append(mat_inv, -mat_rot_inv @ vt, axis=1)
+    bottom_row = np.append(vp, np.array([[sf]]), axis=1)
+    mat_inv = np.append(mat_inv, bottom_row, axis=0)
+
+    return mat_inv

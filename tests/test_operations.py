@@ -26,3 +26,22 @@ class TestOperations(unittest.TestCase):
         )
 
         np.testing.assert_almost_equal(calculated_mat_homo, expected_mat_homo)
+
+    def test_mat_trans_homo_inv(self):
+        e = np.array([[0], [0], [1]])
+        phi = 30
+        vt = np.array([[4], [3], [0]])
+        sf = 1
+        vp = np.zeros((1, 3))
+
+        calculated_mat_homo_inv = num_op.mat_trans_homo_inv(e, phi, vt, sf, vp)
+        expected_mat_homo_inv = np.array(
+            [
+                [0.8660254, 0.5, 0, -4.96410162],
+                [-0.5, 0.8660254, 0, -0.59807621],
+                [0, 0, 1, 0],
+                [0, 0, 0, 1],
+            ]
+        )
+
+        np.testing.assert_almost_equal(calculated_mat_homo_inv, expected_mat_homo_inv)
