@@ -82,3 +82,22 @@ def mat_trans_homo_inv(
     mat_inv = np.append(mat_inv, bottom_row, axis=0)
 
     return mat_inv
+
+
+def apply_homo_trans(mat: np.ndarray, p: np.ndarray) -> np.ndarray:
+    """
+    Applies a homogenous transformation matrix to a vector.
+
+    Parameters:
+    - mat (np.ndarray): Homogenous transformation matrix. Has to be of shape
+      (4, 4).
+    - p (np.ndarray): Vector to be transformed. Can be of shape (3, 1) or (1,
+      3).
+
+    Returns:
+    - np.ndarray: Vector after transformation. Has shape (4, 1).
+    """
+    p = p.reshape(3, 1)
+
+    p = np.append(p, np.array([[1]]), axis=0)
+    return mat @ p
