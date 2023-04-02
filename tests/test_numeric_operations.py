@@ -4,7 +4,7 @@ import src.numeric_operations as num_op
 import random
 
 
-class TestOperations(unittest.TestCase):
+class TestNumericOperations(unittest.TestCase):
     def test_mat_rot_gibbs(self):
         e = np.array([[0], [0], [1]])
         phi = 90
