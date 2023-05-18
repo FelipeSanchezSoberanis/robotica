@@ -1,4 +1,6 @@
 import numpy as np
+from enum import Enum
+import numpy.typing as npt
 
 
 def mat_rot_gibbs(e: np.ndarray, phi: float) -> np.ndarray:
@@ -101,3 +103,68 @@ def apply_homo_trans(mat: np.ndarray, p: np.ndarray) -> np.ndarray:
 
     p = np.append(p, np.array([[1]]), axis=0)
     return mat @ p
+
+
+class AngleMode(Enum):
+    DEG = 1
+    RAD = 2
+
+
+class DHParameters:
+    list_a: list[float]
+    list_r: list[float]
+    list_alpha: list[float]
+    list_theta: list[float]
+    angle_mode: AngleMode
+
+    def __init__(self, angle_mode: AngleMode):
+        self.angle_mode = angle_mode
+        self.list_a = []
+        self.list_r = []
+        self.list_alpha = []
+        self.list_theta = []
+
+    def add_parameters(self, a: float, r: float, alpha: float, theta: float) -> None:
+        self.list_a.append(a)
+        self.list_r.append(r)
+        self.list_alpha.append(alpha)
+        self.list_theta.append(theta)
+
+    def get_transformation_matrices(self) -> list[npt.NDArray]:
+        transformation_matrices: list[npt.NDArray] = []
+
+        for a, r, alpha, theta in zip(self.list_a, self.list_r, self.list_alpha, self.list_theta):
+            if self.angle_mode == AngleMode.DEG:
+                alpha = np.deg2rad(alpha)
+                theta = np.deg2rad(theta)
+
+            transformation_matrices.append(
+                np.array(
+                    [
+                        [
+                            np.cos(theta),
+                            -np.sin(theta) * np.cos(alpha),
+                            np.sin(theta) * np.sin(alpha),
+                            a * np.cos(theta),
+                        ],
+                        [
+                            np.sin(theta),
+                            np.cos(theta) * np.cos(alpha),
+                            -np.cos(theta) * np.sin(alpha),
+                            a * np.sin(theta),
+                        ],
+                        [0, np.sin(alpha), np.cos(alpha), r],
+                        [0, 0, 0, 1],
+                    ]
+                )
+            )
+
+        return transformation_matrices
+
+    def get_final_transformation_matrix(self) -> npt.NDArray:
+        final_transformation_matrix = np.eye(4)
+
+        for matrix in self.get_transformation_matrices():
+            final_transformation_matrix = final_transformation_matrix @ matrix
+
+        return final_transformation_matrix
