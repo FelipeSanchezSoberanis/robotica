@@ -21,7 +21,7 @@ def main() -> None:
 
     print("Final transformation matrix")
     q = np.array(dh_parameters.get_final_transformation_matrix(), dtype=float)
-    sp.pprint(q.round(4))
+    print(q.round(4))
 
 
 if __name__ == "__main__":
