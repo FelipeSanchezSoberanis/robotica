@@ -1,9 +1,11 @@
 import sympy as sp
 import numpy as np
 from enum import Enum
+import sympy.core.mul as mul
 
 
-number = float | int
+Number = float | int
+Symbol = sp.Symbol | mul.Mul
 
 
 class AngleMode(Enum):
@@ -12,10 +14,10 @@ class AngleMode(Enum):
 
 
 class DHParameters:
-    list_a: list[number | sp.Symbol]
-    list_r: list[number | sp.Symbol]
-    list_alpha: list[number | sp.Symbol]
-    list_theta: list[number | sp.Symbol]
+    list_a: list[Number | Symbol]
+    list_r: list[Number | Symbol]
+    list_alpha: list[Number | Symbol]
+    list_theta: list[Number | Symbol]
     angle_mode: AngleMode
 
     def __init__(self, angle_mode: AngleMode):
@@ -27,24 +29,24 @@ class DHParameters:
 
     def add_parameters(
         self,
-        a: number | sp.Symbol,
-        r: number | sp.Symbol,
-        alpha: number | sp.Symbol,
-        theta: number | sp.Symbol,
+        a: Number | Symbol,
+        r: Number | Symbol,
+        alpha: Number | Symbol,
+        theta: Number | Symbol,
     ) -> None:
         self.list_a.append(a)
         self.list_r.append(r)
         self.list_alpha.append(alpha)
         self.list_theta.append(theta)
 
-    def cos(self, x: number | sp.Symbol) -> number | sp.Symbol:
-        if isinstance(x, number):
+    def cos(self, x: Number | Symbol) -> Number | Symbol:
+        if isinstance(x, Number):
             return np.cos(x)
         else:
             return sp.cos(x)  # type: ignore
 
-    def sin(self, x: number | sp.Symbol) -> number | sp.Symbol:
-        if isinstance(x, number):
+    def sin(self, x: Number | Symbol) -> Number | Symbol:
+        if isinstance(x, Number):
             return np.sin(x)
         else:
             return sp.sin(x)  # type: ignore
@@ -54,9 +56,9 @@ class DHParameters:
 
         for a, r, alpha, theta in zip(self.list_a, self.list_r, self.list_alpha, self.list_theta):
             if self.angle_mode == AngleMode.DEG:
-                if isinstance(alpha, number):
+                if isinstance(alpha, Number):
                     alpha = np.deg2rad(alpha)
-                if isinstance(theta, number):
+                if isinstance(theta, Number):
                     theta = np.deg2rad(theta)
 
             transformation_matrices.append(

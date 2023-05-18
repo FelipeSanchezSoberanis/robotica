@@ -1,17 +1,16 @@
 import sympy as sp
+import numpy as np
 from hybrid_operations import AngleMode, DHParameters
 
 
 def main() -> None:
     dh_parameters = DHParameters(AngleMode.DEG)
 
-    theta = sp.symbols("theta")
-
     dh_parameters.add_parameters(0, 0, 90, 60)
     dh_parameters.add_parameters(0, 0, 90, 120)
     dh_parameters.add_parameters(0, 0, 0, 135)
     dh_parameters.add_parameters(0, 4, 90, 0)
-    dh_parameters.add_parameters(0, 0, 90, -theta)
+    dh_parameters.add_parameters(0, 0, 90, -60)
     dh_parameters.add_parameters(0, 1, 0, 45)
 
     transformation_matrices = dh_parameters.get_transformation_matrices()
@@ -21,7 +20,8 @@ def main() -> None:
         sp.pprint(matrix)
 
     print("Final transformation matrix")
-    sp.pprint(dh_parameters.get_final_transformation_matrix())
+    q = np.array(dh_parameters.get_final_transformation_matrix(), dtype=float)
+    sp.pprint(q.round(4))
 
 
 if __name__ == "__main__":
