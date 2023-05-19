@@ -6,4 +6,5 @@ share/
 pyrightconfig.json
 __pycache__/
 videos/
+.ipynb_checkpoints/
 
